@@ -4,7 +4,7 @@ const carsSlice = createSlice({
   name: "cars",
   initialState: {
     searchTerm: "",
-    cars: [],
+    carsArray: [],
   },
   reducers: {
     changeSearchTerm(state, action) {
@@ -14,7 +14,7 @@ const carsSlice = createSlice({
     addCar(state, action) {
       // 假設傳入的資料長這樣
       // action.payload === { name: 'ab, cost: 100 }
-      state.cars.push({
+      state.carsArray.push({
         name: action.payload.name,
         cost: action.payload.cost,
         id: nanoid(),
@@ -24,8 +24,10 @@ const carsSlice = createSlice({
     removeCar(state, action) {
       // 假設傳入的資料長這樣
       // action.payload === 我們想要刪除的那台車的 id
-      const updated = state.cars.filter(car => car.id === action.payload)
-      state.cars = updated
+      const updated = state.carsArray.filter(
+        (car) => car.id !== action.payload
+      );
+      state.carsArray = updated;
     },
   },
 });
