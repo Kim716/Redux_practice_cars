@@ -6,7 +6,7 @@ function CarList() {
   const dispatch = useDispatch();
   // Debounce
   const { searchTerm, carsArray } = useSelector((state) => state.cars);
-  const [filteredCars, setFilteredCars] = useState([]);
+  const [data, setData] = useState({ filteredCars: [], totalCost: 0 });
   // const filteredCars = useSelector(({ cars: { searchTerm, carsArray } }) => {
   //   return carsArray.filter((car) =>
   //     car.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -25,9 +25,13 @@ function CarList() {
       );
     }
 
+    function sum() {
+      return filterCars().reduce((acc, car) => acc + car.cost, 0);
+    }
+
     const timeout = setTimeout(() => {
       console.log(searchTerm);
-      setFilteredCars(filterCars());
+      setData({ filteredCars: filterCars(), totalCost: sum() });
     }, 500);
 
     return () => {
@@ -35,7 +39,7 @@ function CarList() {
     };
   }, [searchTerm, carsArray]);
 
-  const renderedCars = filteredCars.map((car) => {
+  const renderedCars = data.filteredCars.map((car) => {
     return (
       <div key={car.id} className="panel">
         <p>
@@ -49,10 +53,14 @@ function CarList() {
   });
 
   return (
-    <div className="car-list">
-      {renderedCars}
-      <hr />
-    </div>
+    <>
+      <div className="car-list">
+        {renderedCars}
+        <hr />
+      </div>
+      {/* CarValue */}
+      <div className="car-value">Total Cost: ${data.totalCost}</div>
+    </>
   );
 }
 
