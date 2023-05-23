@@ -22,7 +22,12 @@ function CarList() {
     );
   });
 
-  return <div>{renderedCars}</div>;
+  return (
+    <div className="car-list">
+      {renderedCars}
+      <hr />
+    </div>
+  );
 }
 
 export default CarList;
