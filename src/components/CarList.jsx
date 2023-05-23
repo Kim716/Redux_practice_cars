@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 function CarList() {
   const dispatch = useDispatch();
   // Debounce
-  const { searchTerm, carsArray } = useSelector((state) => state.cars);
+  const { name, searchTerm, carsArray } = useSelector((state) => {
+    return { name: state.form.name, ...state.cars };
+  });
   const [data, setData] = useState({ filteredCars: [], totalCost: 0 });
   // const filteredCars = useSelector(({ cars: { searchTerm, carsArray } }) => {
   //   return carsArray.filter((car) =>
@@ -30,7 +32,6 @@ function CarList() {
     }
 
     const timeout = setTimeout(() => {
-      console.log(searchTerm);
       setData({ filteredCars: filterCars(), totalCost: sum() });
     }, 500);
 
@@ -40,8 +41,11 @@ function CarList() {
   }, [searchTerm, carsArray]);
 
   const renderedCars = data.filteredCars.map((car) => {
+    // 決定是否 bold
+    const bold = name && car.name.toLowerCase().includes(name.toLowerCase());
+
     return (
-      <div key={car.id} className="panel">
+      <div key={car.id} className={`panel ${bold && "bold"}`}>
         <p>
           {car.name} - ${car.cost}
         </p>
